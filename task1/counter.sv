@@ -2,13 +2,13 @@
 //counter resets if rst is true
 module counter#(
     parameter WIDTH = 8
-) (
+)(
 
  // interface signals
  input logic clk, //input into counter block: clock
  input logic rst, //input into counter block: reset
  input logic en, //input into counter block: counter enable
- output logc [WIDTH-1:0] count //count output
+ output logic [WIDTH-1:0] count //count output
 );
 
 always_ff @ (posedge clk)
