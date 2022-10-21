@@ -13,6 +13,8 @@
     //Initiate instance of vcounter, so a module() is a class and we're creating instance of it
     Vcounter* top = new Vcounter; //so pointer pointing to instance of Vcounter
     //init trace dump
+    //code below starts signal tracing and tfp is an object of the signal tracing of the current object(vcounter)
+    //and this data is dumped to file counter.vcd
     Verilated::traceEverOn(true);
     VerilatedVcdC* tfp = new VerilatedVcdC;
     top->trace (tfp,99);
@@ -32,7 +34,8 @@
             top->clk = !top->clk;
             top->eval ();
         }
-        top->rst = (i<2) | (i==15); //set rst parameter to be dependen on OR statement so if current clock cycle is <2 or ==15 then = 1 so reset
+        top->rst = (i<2) | (i==15); //set rst parameter to be dependen on OR statement so if current clock cycle is <2 or ==15 then = 1 
+        //so reset
         //else let rst = 0; 
         top->en = (i>4); //so doing (i>4) checks whether i>4 and outputs a bool so if >4 then en = 1 so count increment starts
         if (Verilated::gotFinish()) exit(0);
