@@ -7,7 +7,7 @@
     int main(int argc, char **argv, char**env) {
         int i;
         int clk;
-    }
+        int icnt = 0;
 
     Verilated::commandArgs(argc, argv);
     //Initiate instance of vcounter, so a module() is a class and we're creating instance of it
@@ -27,6 +27,14 @@
 
     //run simulation for certain number of clock cycles
     for (i=0; i<300; i++) {
+        if(top->count==9 && icnt<=3) { //in C++ you can use ints instead of binary form N'B
+            top->en = 0;
+            icnt++; 
+        }
+        else if (icnt==4) {
+            top->en = 1;
+            icnt = 0;
+        }
         //i is current clock cycle in overall duration of simulation (given in clock cycles)
         //but as we need clk cycle to iterate between 0,1 then:
         for (clk=0; clk<2; clk++) {
