@@ -13,6 +13,10 @@ module counter#(
 
 always_ff @ (posedge clk)
     if (rst) count <= {WIDTH{1'b0}}; //so if rst is true (1) then count = 0
-    else count<= count + {{WIDTH-1{1'b0}}, en}; //count increments by 1 as long as en is also true
+    else begin
+        if (en) count<= count + {{WIDTH-1{1'b0}}, en};
+        else count<= count - {{WIDTH-1{1'b0}}, !en};
+    end
+    //count<= count + {{WIDTH-1{1'b0}}, en}; //count increments by 1 as long as en is also true
 
 endmodule
