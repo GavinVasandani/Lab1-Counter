@@ -1,5 +1,5 @@
 //Testbench for testing counter
-
+//This works for task 3, increments count every clock cycle and every clock cycle is iterated by clicking EC11
 #include "Vcounter.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
@@ -44,10 +44,12 @@
         }*/
         //i is current clock cycle in overall duration of simulation (given in clock cycles)
         //but as we need clk cycle to iterate between 0,1 then:
-        for (clk=0; clk<2; clk++) {
-            tfp->dump (2*i+clk);
-            top->clk = !top->clk;
-            top->eval ();
+        if (top->en) { //so this allows us to iterate clock only everytime we enable flag
+            for (clk=0; clk<2; clk++) {
+                tfp->dump (2*i+clk);
+                top->clk = !top->clk;
+                top->eval ();
+            }
         }
 
         //Send count value to be displayed on 7-seg display every cycle on vbuddy screen:
@@ -68,10 +70,10 @@
 
         top->en = vbdFlag(); //so doing (i>4) checks whether i>4 and outputs a bool so if >4 then en = 1 so count increment starts
 
-        if (top->en) { //so if enable is 1 because flag is outputting 1 then assign count value to vbdValue aka value in vbuddy
+        /*if (top->en) { //so if enable is 1 because flag is outputting 1 then assign count value to vbdValue aka value in vbuddy
             top->count = vbdValue();
         } //else count behaves as normal and keeps iterating or decrementing
-
+        */
         if (Verilated::gotFinish()) exit(0);
     }
     vbdClose();
